@@ -29,7 +29,7 @@ Mas não possuem uma forma estruturada de medir:
 - Densidade de loops narrativos
 - Risco de queda estrutural
 
-RetentionLab introduz um modelo analítico para resolver isso.
+RetentionLab introduz um **modelo analítico determinístico** para resolver isso.
 
 ---
 
@@ -38,7 +38,7 @@ RetentionLab introduz um modelo analítico para resolver isso.
 RetentionLab é um sistema híbrido:
 
 - **LLM** → Extrai atributos estruturais
-- **Engine matemático** → Calcula score determinístico
+- **Engine Matemático** → Calcula score determinístico
 
 **A LLM não decide.**  
 Ela apenas extrai dados estruturados.
@@ -48,6 +48,7 @@ O score final é:
 - Explicável
 - Auditável
 - Reproduzível
+- Parametrizável
 
 ---
 
@@ -63,15 +64,17 @@ O score final é:
 Execução local via **Ollama**.  
 A LLM retorna JSON estruturado contendo:
 
-- Conflito
+- Conflito inicial
 - Curiosity gap
 - Open loops
-- Tension per block
+- Closed loops
+- Tensão por bloco
 - Métricas de exposição
 
 ### 3️⃣ Deterministic Scoring Engine
 Calcula os seguintes pilares:
 
+- Structural Segmentation
 - Hook Magnetism
 - Loop Density
 - Tension Curve
@@ -83,24 +86,27 @@ Totalmente matemático e auditável.
 
 ---
 
-## 📈 Retention Score Breakdown
+## 📈 Retention Score Breakdown (v1.0)
 
-| Pilar | Peso | Função |
+| Pilar | Peso | Descrição |
 | :--- | :---: | :--- |
-| 🎣 **Hook Magnetism** | `20` | Mede a força da abertura: conflito imediato, concretude e quebra de padrão |
-| 🔄 **Loop Density** | `20` | Avalia a frequência e qualidade dos loops abertos ao longo do roteiro |
-| 📈 **Tension Curve** | `20` | Analisa a progressão da tensão e existência de pico narrativo |
-| ⚠️ **Risk Blocks** | `20` | Identifica zonas de exposição longa e risco de abandono |
-| 🎯 **Loop Closure** | `20` | Verifica se os loops abertos são fechados de forma satisfatória |
+| 🧱 **Structural Segmentation** | `25` | Consistência estrutural e estabilidade de blocos |
+| 🎣 **Hook Magnetism** | `20` | Força estrutural da abertura |
+| 🔄 **Loop Density** | `20` | Frequência de loops narrativos |
+| 📈 **Tension Curve** | `15` | Progressão estrutural da tensão |
+| ⚠️ **Risk Blocks** | `10` | Identificação de zonas de baixa intensidade |
+| 🎯 **Loop Closure** | `10` | Capacidade de fechar promessas narrativas |
+| **Total** | **100** | **Score determinístico** |
 
 ---
 
 ## 🔍 What v1.0 Does
 
 - Analisa roteiro textual
-- Gera score estrutural
+- Gera score estrutural (0–100)
 - Identifica blocos de risco
 - Detecta loops abertos e fechados
+- Avalia progressão de tensão
 - Produz diagnóstico automatizado
 
 ---
@@ -108,25 +114,30 @@ Totalmente matemático e auditável.
 ## ❌ What v1.0 Does NOT Do
 
 - Não prevê retenção real do YouTube
-- Não usa dados externos
+- Não utiliza dados externos
 - Não utiliza modelo treinado próprio
-- Não depende de modelos proprietários
+- Não depende de modelos proprietários pagos
+- Não otimiza algoritmo de plataforma
+
+> RetentionLab mede estrutura.  
+> Não performance histórica.
 
 ---
 
-## 🚀 Design Principles
+## 🧩 Design Principles
 
 - Engine matemático antes de predição
 - LLM como extrator, não como juiz
 - Estrutura antes de otimização
+- Parametrização explícita
 - Modularidade desde o início
 - Evolução incremental
 
 ---
 
-## 🧩 Why Local-First?
+## 🖥 Why Local-First?
 
-RetentionLab v1.0.
+RetentionLab v1.0 foi projetado para independência operacional.
 
 ### 💻 Hardware Constraints
 Desenvolvido com:
@@ -164,6 +175,7 @@ Isso permite:
 - Controle total do score
 - Transparência na lógica
 - Evolução modular
+- Auditoria completa
 
 ---
 
@@ -171,10 +183,10 @@ Isso permite:
 
 | Componente | Descrição |
 | :--- | :--- |
-| ⏱️ **Loop Latency Analysis** | Mede o tempo entre abertura e fechamento de cada loop |
-| 📉 **Mid-Video Sag Detection** | Identifica quedas de tensão no meio do roteiro |
-| 🎚️ **Niche Calibration** | Ajusta parâmetros por nicho (educação, entretenimento, etc) |
-| 🤖 **Predictive Retention Modeling** | Correlaciona score com dados reais de retenção |
-| 📊 **Multi-Script Benchmarking** | Compara roteiros lado a lado |
+| ⏱️ **Loop Latency Analysis** | Mede tempo entre abertura e fechamento de loops |
+| 📉 **Mid-Video Sag Detection** | Detecta quedas estruturais no meio do roteiro |
+| 🎚️ **Niche Calibration** | Ajusta parâmetros por nicho |
+| 🤖 **Predictive Retention Modeling** | Correlaciona score com retenção real |
+| 📊 **Multi-Script Benchmarking** | Comparação entre múltiplos roteiros |
 
 ---
