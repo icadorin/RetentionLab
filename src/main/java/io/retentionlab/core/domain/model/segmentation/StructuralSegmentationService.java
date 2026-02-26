@@ -7,37 +7,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StructuralSegmentationService {
-    private static final int WORD_PER_MINUTE = 150;
-    private static final int BLOCK_SIZE = 150;
 
-    public ScriptStructure analyse(String text) {
+    private static final int DEFAULT_WORDS_PER_MINUTE = 150;
+    private static final int DEFAULT_BLOCK_SIZE = 150;
 
-        if (text == null || text.isBlank()) {
-            return new ScriptStructure(0, 0, List.of());
+    private final int wordsPerMinute;
+    private final int blockSize;
+
+    public StructuralSegmentationService() {
+        this(DEFAULT_WORDS_PER_MINUTE, DEFAULT_BLOCK_SIZE);
+    }
+
+    public StructuralSegmentationService(int wordsPerMinute, int blockSize) {
+        this.wordsPerMinute = wordsPerMinute;
+        this.blockSize = blockSize;
+    }
+
+    public ScriptStructure analyze(String text) {
+        if (isBlank(text)) {
+            return emptyScript();
         }
 
-        String[] word = text.trim().split("\\s+");
-        int totalWords = word.length;
+        int totalWords = countWords(text);
 
-        double duration = totalWords / (double)WORD_PER_MINUTE;
+        return new ScriptStructure(
+            totalWords,
+            calculateDuration(totalWords),
+            createBlocks(totalWords)
+        );
+    }
 
+    private boolean isBlank(String text) {
+        return text == null || text.isBlank();
+    }
+
+    private ScriptStructure emptyScript() {
+        return new ScriptStructure(0, 0.0, List.of());
+    }
+
+    private int countWords(String text) {
+        return text.trim().split("\\s+").length;
+    }
+
+    private double calculateDuration(int totalWords) {
+        return totalWords / (double) wordsPerMinute;
+    }
+
+    private List<Block> createBlocks(int totalWords) {
         List<Block> blocks = new ArrayList<>();
-
         int blockId = 1;
-        for (int i = 0; i < totalWords; i += BLOCK_SIZE) {
 
-            int remaining = Math.min(BLOCK_SIZE, totalWords - i);
-            double startMinute = i / (double) WORD_PER_MINUTE;
-            double endMinute = (i + remaining) / (double) WORD_PER_MINUTE;
-
-            blocks.add(new Block(
-                blockId++,
-                startMinute,
-                endMinute,
-                remaining
-            ));
+        for (int startWord = 0; startWord < totalWords; startWord += blockSize) {
+            int endWord = Math.min(startWord + blockSize, totalWords);
+            blocks.add(createBlock(blockId++, startWord, endWord));
         }
 
-        return new ScriptStructure(totalWords, duration, blocks);
+        return blocks;
+    }
+
+    private Block createBlock(int id, int startWord, int endWord) {
+        int wordCount = endWord - startWord;
+
+        return new Block(
+            id,
+            startWord / (double) wordsPerMinute,
+            endWord / (double) wordsPerMinute,
+            wordCount
+        );
     }
 }
