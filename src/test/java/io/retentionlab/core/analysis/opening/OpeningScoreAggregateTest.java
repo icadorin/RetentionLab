@@ -1,34 +1,51 @@
 package io.retentionlab.core.analysis.opening;
 
+import io.retentionlab.core.domain.analysis.opening.OpeningHookScore;
 import io.retentionlab.core.domain.analysis.opening.OpeningScoreAggregate;
 import io.retentionlab.core.domain.analysis.opening.signal.OpeningSignalScore;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OpeningScoreAggregateTest {
 
     @Test
-    void shouldCalculateBalancedOpeningScore() {
+    void shouldCalculateWeightedFinalScore() {
+
+        OpeningHookScore hookScore =
+            new OpeningHookScore(1.0, 75, 75); // 100% estrutura
 
         OpeningSignalScore signalScore =
-            new OpeningSignalScore(1, 1, 1, 0.5);
+            new OpeningSignalScore(1, 1, 1, 0.5); // 50% sinais
 
         OpeningScoreAggregate result =
-            OpeningScoreAggregate.evaluate(75, signalScore);
+            OpeningScoreAggregate.evaluate(hookScore, signalScore);
 
-        assertTrue(result.finalScore() > 0);
-        assertEquals(100.0, result.structuralDensity());
+        /*
+         Hook component:
+         1.0 * 100 * 0.4 = 40
+
+         Signal component:
+         0.5 * 100 * 0.6 = 30
+
+         Final = 70
+        */
+
+        assertEquals(70.0, result.finalScore());
     }
 
     @Test
-    void shouldReturnZeroWhenWordCountIsZero() {
+    void shouldReturnZeroWhenBothScoresAreZero() {
+
+        OpeningHookScore hookScore =
+            new OpeningHookScore(0.0, 0, 75);
 
         OpeningSignalScore signalScore =
-            new OpeningSignalScore(1, 1, 1, 0.5);
+            new OpeningSignalScore(0, 0, 0, 0.0);
 
         OpeningScoreAggregate result =
-            OpeningScoreAggregate.evaluate(0, signalScore);
+            OpeningScoreAggregate.evaluate(hookScore, signalScore);
 
-        assertEquals(0, result.finalScore());
+        assertEquals(0.0, result.finalScore());
     }
 }
