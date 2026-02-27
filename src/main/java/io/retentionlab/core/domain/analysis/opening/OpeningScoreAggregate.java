@@ -4,47 +4,26 @@ import io.retentionlab.core.domain.analysis.opening.signal.OpeningSignalScore;
 
 public class OpeningScoreAggregate {
 
-    private static final int IDEAL_WORD_COUNT = 75;
-
     private final double finalScore;
-    private final double signalDensity;
-    private final double structuralDensity;
 
-    private OpeningScoreAggregate(
-        double finalScore,
-        double signalDensity,
-        double structuralDensity
-    ) {
+    private OpeningScoreAggregate(double finalScore) {
         this.finalScore = finalScore;
-        this.signalDensity = signalDensity;
-        this.structuralDensity = structuralDensity;
     }
 
     public static OpeningScoreAggregate evaluate(
-        int wordCount,
+        OpeningHookScore hookScore,
         OpeningSignalScore signalScore
     ) {
 
-        if (wordCount <= 0) {
-            return new OpeningScoreAggregate(0, 0, 0);
-        }
+        double hookComponent =
+            hookScore.densityScore() * 100 * 0.4;
 
-        double signalDensity = ((double) signalScore.totalSignals() / wordCount) * 100;
+        double signalComponent =
+            signalScore.normalizedScore() * 100 * 0.6;
 
-        double structuralDensity = Math.min(
-            1.0,
-            (double) IDEAL_WORD_COUNT / wordCount
-        );
+        double finalScore = hookComponent + signalComponent;
 
-        double finalScore =
-            (signalDensity * 0.6) +
-                (structuralDensity * 100 * 0.4);
-
-        return new OpeningScoreAggregate(
-            round(finalScore),
-            round(signalDensity),
-            round(structuralDensity * 100)
-        );
+        return new OpeningScoreAggregate(round(finalScore));
     }
 
     private static double round(double value) {
@@ -53,13 +32,5 @@ public class OpeningScoreAggregate {
 
     public double finalScore() {
         return finalScore;
-    }
-
-    public double signalDensity() {
-        return signalDensity;
-    }
-
-    public double structuralDensity() {
-        return structuralDensity;
     }
 }
