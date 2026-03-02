@@ -7,6 +7,9 @@ public record OpeningSignalScore(
     double normalizedScore
 ) {
 
+    public static final OpeningSignalScore ZERO =
+        new OpeningSignalScore(0, 0, 0, 0.0);
+
     public OpeningSignalScore {
         if (normalizedScore < 0 || normalizedScore > 1) {
             throw new IllegalArgumentException(
