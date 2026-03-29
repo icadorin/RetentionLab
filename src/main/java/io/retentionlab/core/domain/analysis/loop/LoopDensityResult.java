@@ -5,9 +5,8 @@ import java.util.List;
 public record LoopDensityResult(
     List<Loop> loops,
     int openLoops,
-    double density,
-    double score
+    int closedLoops
 ) {
     public static final LoopDensityResult EMPTY =
-        new LoopDensityResult(List.of(), 0, 0.0, 0.0);
+        new LoopDensityResult(List.of(), 0, 0);
 }
