@@ -15,17 +15,12 @@ public class OpeningScoreAggregate {
         OpeningSignalScore signalScore
     ) {
 
-        // Hook contribui com 40% do score final da abertura
-        // densityScore já está em 0–1 → converte para 0–100 antes de aplicar peso
-        double hookComponent =
-            hookScore.densityScore() * 100 * 0.4;
+        // Hook 40%
+        double hookComponent = hookScore.densityScore() * 0.4;
 
-        // Signals contribuem com 60%
-        // normalizedScore também está em 0–1
-        double signalComponent =
-            signalScore.normalizedScore() * 100 * 0.6;
+        // Signals 60%
+        double signalComponent = signalScore.normalizedScore() * 0.6;
 
-        // Soma ponderada final da abertura (0–100)
         double finalScore = hookComponent + signalComponent;
 
         return new OpeningScoreAggregate(round(finalScore));
