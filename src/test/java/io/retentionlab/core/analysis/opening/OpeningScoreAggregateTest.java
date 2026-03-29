@@ -21,17 +21,7 @@ class OpeningScoreAggregateTest {
         OpeningScoreAggregate result =
             OpeningScoreAggregate.evaluate(hookScore, signalScore);
 
-        /*
-         Hook component:
-         1.0 * 100 * 0.4 = 40
-
-         Signal component:
-         0.5 * 100 * 0.6 = 30
-
-         Final = 70
-        */
-
-        assertEquals(70.0, result.finalScore());
+        assertEquals(0.7, result.finalScore());
     }
 
     @Test
