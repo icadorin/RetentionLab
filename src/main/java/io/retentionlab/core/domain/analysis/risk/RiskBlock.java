@@ -5,5 +5,6 @@ import io.retentionlab.core.domain.model.Block;
 public record RiskBlock(
     Block block,
     double tensionValue,
-    RiskType type
+    RiskType type,
+    double severity
 ) {}
